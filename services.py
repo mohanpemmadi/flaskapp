@@ -31,7 +31,18 @@ class ListAllEmployees(Resource):
         con.close()
         return {'message': 'students data fetched successfully', 'data':data, 'status': 200}
 
-
+class GetEmployee(Resource):
+    def get(self, name):
+        con = get_db_connection()
+        cur = con.cursor()
+        cur.execute("select * from employee where name='{}'".format(name))
+        employee = cur.fetchone()
+        if employee:
+            data = {'name':employee[0],'age':employee[1],'location':employee[2],'sal':employee[3]}
+        else:
+            return {'message': f'employee {name} data not found '}
+        con.close()
+        return {'message': f'employee {name} data fetched successfully', 'data':data, 'status': 200}
 
 class CreateEmployee(Resource):
     def post(self):
@@ -39,8 +50,33 @@ class CreateEmployee(Resource):
         con = get_db_connection()
         cur = con.cursor()
         insert_query = "insert into employee values('{}',{},'{}',{})".format(req['name'],req['age'],req['location'],req['salary'])
-        print(insert_query)
         cur.execute(insert_query)
         con.commit()
         con.close()
         return {'message':'data inserted successfully','status':200}
+
+
+class UpdateEmployee(Resource):
+    def put(self, name):
+        req = request.get_json(force=True)
+        con = get_db_connection()
+        cur = con.cursor()
+        update_query = "update employee set age={},location='{}',salary={} where name='{}' ".format(req['age'],req['location'],req['salary'],name)
+        cur.execute(update_query)
+        con.commit()
+        con.close()
+        return {'message':f'employee {name} is successfully update','status':200}
+
+class DeleteEmployee(Resource):
+    def delete(self, name):
+        con = get_db_connection()
+        cur = con.cursor()
+        delete_query = "delete from employee where name='{}' ".format(name)
+        cur.execute(delete_query)
+        con.commit()
+        con.close()
+        return {'message':f'employee {name} is successfully deleted','status':200}
+
+
+
+

@@ -10,3 +10,6 @@ def all_urls(api):
     api.add_resource(services.MyAge, '/myage/<int:age>')
     api.add_resource(services.ListAllEmployees,'/list_all_emp') #  http://127.0.0.1:5000/list_all_students
     api.add_resource(services.CreateEmployee,'/add_employee') #  http://127.0.0.1:5000/add_employee
+    api.add_resource(services.UpdateEmployee,'/update_employee/<string:name>') #  http://127.0.0.1:5000/update_employee/venky
+    api.add_resource(services.DeleteEmployee,'/delete_employee/<string:name>') #  http://127.0.0.1:5000/delete_employee/venky
+    api.add_resource(services.GetEmployee,'/get_employee/<string:name>') #  http://127.0.0.1:5000/get_employee/venky
